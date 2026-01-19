@@ -1,0 +1,52 @@
+import React from "react";
+import { Trash2 } from "lucide-react";
+import { Button } from "@mantine/core";
+import Badge from "../../../../shared/ui/Badge";
+
+interface TestCardProps {
+  title: string;
+  description: string;
+  status: "Active" | "Completed";
+  onDelete?: () => void;
+}
+
+const TestCard: React.FC<TestCardProps> = ({
+  title,
+  description,
+  status,
+  onDelete,
+}) => {
+  const isCompleted = status === "Completed";
+
+  const getBadgeColor = (status: string): "green" | "gray" => {
+    return status === "Active" ? "green" : "gray";
+  };
+
+  return (
+    <div className="w-full rounded-xl border border-gray-200 bg-white p-4">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <h3 className="text-sm font-semibold text-gray-900">{title}</h3>
+
+        <div className="flex items-center gap-2">
+          <Badge color={getBadgeColor(status)} size="xs">
+            {status}
+          </Badge>
+
+          {isCompleted && onDelete && (
+            <Button variant="subtle" p={0} onClick={onDelete}>
+              <Trash2 size={16} className="text-gray-400 hover:text-red-500" />
+            </Button>
+          )}
+        </div>
+      </div>
+
+      {/* Description box */}
+      <div className="mt-3 rounded-lg bg-blue-50 px-4 py-3">
+        <p className="text-sm text-gray-700">{description}</p>
+      </div>
+    </div>
+  );
+};
+
+export default TestCard;
