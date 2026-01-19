@@ -1,14 +1,15 @@
-// import { Avatar } from "@mantine/core";
-// import { Menu } from "lucide-react";
-import threeline from "../../assets/threeline.svg";
-// import React from "react";
 
-const MainHeader = ({ title } : { title: string | undefined }) => {
+import threeline from "../../assets/threeline.svg";
+import { Button } from "@mantine/core";
+
+const MainHeader = ({ title, onMenuClick }: { title: string | undefined; onMenuClick?: () => void }) => {
   return (
     <div>
       {/* Left: Menu + Greeting */}
       <div className="flex justify-start items-center gap-3">
-        <img className="p-3" src={threeline} alt="Menu" />
+        <Button variant="subtle" onClick={onMenuClick} className="p-0">
+          <img className="p-3" src={threeline} alt="Menu" />
+        </Button>
 
         <div className="leading-tight">
           <p className="text font-semibold text-xl text-gray-900">{title}</p>

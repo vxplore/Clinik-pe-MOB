@@ -7,15 +7,26 @@ import { Modal } from "@mantine/core";
 import { type Activity } from "./ActivitiesTab/ActivitesTab";
 import PaymentModal from "./PaymentModal";
 import AllTabs from "./AllTabs";
-import { showToast } from "../../../app/notifications";
+import { notify } from "../../../app/notifications";
+import { useUIStore } from "../../../stores/ui.store";
 
 const AssignmentTabs = () => {
   const [activeTab, setActiveTab] = useState<string | null>("Sample");
   const [paymentModalOpen, setPaymentModalOpen] = useState(false);
   const navigate = useNavigate();
+  // UI Store
+  const showLoader = useUIStore((s) => s.showLoader);
+  const hideLoader = useUIStore((s) => s.hideLoader);
+  // const setError = useUIStore((s) => s.setError);
 
-  const handleMarkCollected = () => {
-    showToast.error("Sample marked as collected");
+  const handleMarkCollected = async () => {
+    // setError("Marking samples as collected...");
+    showLoader();
+    setTimeout(() => {
+      hideLoader();
+      notify.success("Samples marked as collected successfully!");
+    }, 1000);
+    // 5 seconds
   };
 
   const activities: Activity[] = [
@@ -76,8 +87,21 @@ const AssignmentTabs = () => {
       {(activeTab === "Tests" || activeTab === "Payments") && (
         <button
           onClick={handleAddClick}
-          className="fixed bottom-20 right-6 w-14 h-14 rounded-full bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center shadow-lg transition-colors"
           aria-label="Add"
+          className="
+    fixed bottom-20 right-6
+    w-14 h-14 rounded-full
+    bg-blue-600 text-white
+    flex items-center justify-center
+    shadow-lg
+    transition
+    duration-150
+    ease-out
+    active:scale-90
+    active:shadow-md
+    focus:outline-none
+    touch-manipulation
+  "
         >
           <Plus size={24} />
         </button>

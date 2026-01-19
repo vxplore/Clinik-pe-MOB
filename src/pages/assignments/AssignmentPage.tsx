@@ -14,6 +14,35 @@ const AssignmentPage = () => {
     { label: "new", value: "new" },
   ];
 
+  const assignments = [
+    {
+      id: "1",
+      name: "Ayan paul",
+      age: 32,
+      gender: "Male",
+      address: "123 Oak Street, Downtown",
+      latitude: "40.7128",
+      longitude: "-74.0060",
+      collectedCount: 2,
+      totalCount: 3,
+      testsCount: 3,
+      samples: ["Blood", "Urine", "Saliva"],
+    },
+    {
+      id: "2",
+      name: "Ayan paul",
+      age: 32,
+      gender: "Male",
+      address: "123 Oak Street, Downtown",
+      latitude: "40.7128",
+      longitude: "-74.0060",
+      collectedCount: 2,
+      totalCount: 3,
+      testsCount: 3,
+      samples: ["Blood", "Urine", "Saliva"],
+    },
+  ];
+
   const handleCategoryChange = (value: string) => setActiveTab(value);
 
   return (
@@ -33,32 +62,22 @@ const AssignmentPage = () => {
         <div className="h-16" />
       </div>
       <div className="flex flex-col gap-4">
-        <AssignmentPageCard
-          id="1"
-          name="Ayan paul"
-          age={32}
-          gender="Male"
-          address="123 Oak Street, Downtown"
-          latitude="40.7128"
-          longitude="-74.0060"
-          collectedCount={2}
-          totalCount={3}
-          testsCount={3}
-          samples={["Blood", "Urine", "Saliva"]}
-        />
-        <AssignmentPageCard
-          id="2"
-          name="Ayan paul"
-          age={32}
-          gender="Male"
-          address="123 Oak Street, Downtown"
-          latitude="40.7128"
-          longitude="-74.0060"
-          collectedCount={2}
-          totalCount={3}
-          testsCount={3}
-          samples={["Blood", "Urine", "Saliva"]}
-        />
+        {assignments.map((assignment) => (
+          <AssignmentPageCard
+            key={assignment.id}
+            id={assignment.id}
+            name={assignment.name}
+            age={assignment.age}
+            gender={assignment.gender}
+            address={assignment.address}
+            latitude={assignment.latitude}
+            longitude={assignment.longitude}
+            collectedCount={assignment.collectedCount}
+            totalCount={assignment.totalCount}
+            testsCount={assignment.testsCount}
+            samples={assignment.samples}
+          />
+        ))}
       </div>
     </div>
   );

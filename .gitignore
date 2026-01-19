@@ -21,6 +21,10 @@ build
 .env.test.local
 .env.production.local
 
+# API Keys
+key.ts
+MapAPI.ts
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

@@ -1,6 +1,5 @@
 import React from "react";
 import { Trash2 } from "lucide-react";
-import { Button } from "@mantine/core";
 import Badge from "../../../../shared/ui/Badge";
 
 interface TestCardProps {
@@ -34,9 +33,9 @@ const TestCard: React.FC<TestCardProps> = ({
           </Badge>
 
           {isCompleted && onDelete && (
-            <Button variant="subtle" p={0} onClick={onDelete}>
-              <Trash2 size={16} className="text-gray-400 hover:text-red-500" />
-            </Button>
+            <div className="cursor-pointer  hover:bg-red-100 rounded-full p-2">
+              <Trash2 size={16} className="text-red-400 hover:text-red-500" />
+            </div>
           )}
         </div>
       </div>

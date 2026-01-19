@@ -7,14 +7,13 @@ interface Sample {
   subtitle: string;
   statusText: string;
   note: string;
-
 }
 
 interface SampleTabProps {
-  handleMarkCollected?: () => void;
+  handleMarkCollected?: () => Promise<void>;
 }
 
-const SampleTab = ({handleMarkCollected} : SampleTabProps) => {
+const SampleTab = ({ handleMarkCollected = async () => {} }: SampleTabProps) => {
   const stats = [
     { label: "Total", value: "8", type: "total" as const },
     { label: "Collected", value: "5", type: "collected" as const },

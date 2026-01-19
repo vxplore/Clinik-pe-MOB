@@ -98,9 +98,9 @@ const SplashPage = () => {
           fadeOut ? "opacity-0" : "opacity-100"
         }`}
       >
-        <p className="text-gray-500 text-xs font-medium">
-          Powered by Innovation
-        </p>
+        {/* <p className="text-gray-500 text-xs font-medium">
+          Powered by Vxplore technologies
+        </p> */}
       </div>
 
       <style>{`

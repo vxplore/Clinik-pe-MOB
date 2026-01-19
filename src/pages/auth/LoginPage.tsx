@@ -3,8 +3,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import logo from "../../assets/clinikpe.svg";
 import { loginSchema, type LoginFormValues } from "./validation";
-
+import { notify } from "../../app/notifications";
+import { useNavigate } from "react-router-dom";
 export default function LoginPage() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -16,7 +18,12 @@ export default function LoginPage() {
 
   const onSubmit = async (data: LoginFormValues) => {
     console.log(data);
-    
+    //api call will work here
+    const success = true;
+    if (success) {
+      notify.success("Login successful!");
+      navigate("/dashboard", { replace: true });
+    }
   };
 
   return (

@@ -9,7 +9,7 @@ interface StatCardProps {
 
 const StatCard = ({ icon, label, value, color = "#0D52AF" }: StatCardProps) => {
   return (
-    <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+    <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
       {/* Icon Container */}
       <div
         className="w-12 h-12 rounded-lg flex items-center justify-center mb-4"

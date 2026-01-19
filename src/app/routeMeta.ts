@@ -1,13 +1,10 @@
 export type HeaderVariant = "main" | "back" | "none";
-
-export const routeMeta: Record<
-  string,
-  {
-    header: HeaderVariant;
-    title?: string;
-    showBottomNav?: boolean;
-  }
-> = {
+export interface RouteMeta {
+  header: HeaderVariant;
+  title?: string;
+  showBottomNav?: boolean;
+}
+export const routeMeta: Record<string,RouteMeta> = {
   "/": {
     header: "none",
     showBottomNav: false,
@@ -41,9 +38,34 @@ export const routeMeta: Record<
     title: "Profile",
     showBottomNav: true,
   },
-  "/add-test": {
+  "/assignments/:id/add-test": {
     header: "back",
     title: "Add Test",
     showBottomNav: true,
+  },
+  "/settings": {
+    header: "back",
+    title: "Settings",
+    showBottomNav: true,
+  },
+  "/help-support": {
+    header: "back",
+    title: "Help / Support",
+    showBottomNav: true,
+  },
+  "/payments": {
+    header: "back",
+    title: "Payments",
+    showBottomNav: true,
+  },
+  "/history": {
+    header: "back",
+    title: "History",
+    showBottomNav: true,
+  },
+  "/map-view": {
+    header: "back",
+    title: "Map View",
+    showBottomNav: false,
   },
 };

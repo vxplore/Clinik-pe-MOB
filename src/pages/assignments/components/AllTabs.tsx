@@ -8,10 +8,15 @@ interface AllTabsProps {
   activeTab: string | null;
   setActiveTab: (tab: string | null) => void;
   activities: Activity[];
-  handleMarkCollected?: () => void;
+  handleMarkCollected?: () => Promise<void>;
 }
 
-const AllTabs = ({ activeTab, setActiveTab, activities ,handleMarkCollected }: AllTabsProps) => {
+const AllTabs = ({
+  activeTab,
+  setActiveTab,
+  activities,
+  handleMarkCollected,
+}: AllTabsProps) => {
   return (
     <Tabs
       value={activeTab}
@@ -46,7 +51,7 @@ const AllTabs = ({ activeTab, setActiveTab, activities ,handleMarkCollected }: A
         <PaymentTab />
       </Tabs.Panel>
       <Tabs.Panel value="Activities" className="pt-2">
-        <ActivitesTab  activities={activities} />
+        <ActivitesTab activities={activities} />
       </Tabs.Panel>
     </Tabs>
   );

@@ -3,6 +3,7 @@ import Badge from "../../../../shared/ui/Badge";
 import { Ban, AlertCircle } from "lucide-react";
 import { Button } from "@mantine/core";
 
+
 interface SampleCardProps {
   title: string;
   subtitle: string;
@@ -18,9 +19,12 @@ const SampleCard: React.FC<SampleCardProps> = ({
   note,
   handleMarkCollected,
 }) => {
+  // const isLoading = useUIStore((s) => s.isLoading);
+  // const isError = useUIStore((s) => s.error);
   const getBadgeColor = (status: string): "green" | "orange" => {
     return status.toLowerCase() === "collected" ? "green" : "orange";
   };
+
 
   const isPending = statusText.toLowerCase() === "pending";
 
@@ -52,7 +56,11 @@ const SampleCard: React.FC<SampleCardProps> = ({
         <div className="mt-3 flex gap-3 items-center">
           <Button
             onClick={handleMarkCollected}
-          fullWidth color="#09986A" size="md">
+            
+            fullWidth
+            color="#09986A"
+            size="md"
+          >
             Mark Collected
           </Button>
           <div className="p-4 bg-gray-100 rounded-xl  hover:bg-gray-200">
