@@ -41,12 +41,18 @@ const loadGoogleMaps = (apiKey: string): Promise<void> => {
 };
 
 export default function LocationMapView({ lat, lng, height = "70vh" }: Props) {
-  const mapRef = useRef<any>(null);
-  const mapContainerRef = useRef<HTMLDivElement>(null);
-  const userMarkerRef = useRef<any>(null);
+  const mapRef = useRef<google.maps.Map | null>(null);
+  const mapContainerRef = useRef<HTMLDivElement | null>(null);
+
+  const userMarkerRef = useRef<google.maps.Marker | null>(null);
+
   const watchIdRef = useRef<number | null>(null);
-  const directionsRendererRef = useRef<any>(null);
-  const trafficLayerRef = useRef<any>(null);
+
+  const directionsRendererRef = useRef<google.maps.DirectionsRenderer | null>(
+    null,
+  );
+
+  const trafficLayerRef = useRef<google.maps.TrafficLayer | null>(null);
 
   const [userLocation, setUserLocation] = useState<{
     lat: number;
