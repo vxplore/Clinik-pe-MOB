@@ -1,11 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import {
-  IndianRupee,
-  HandFist,
-  FolderClock,
-  LogOut,
-} from "lucide-react";
+import { IndianRupee, HandFist, FolderClock, LogOut } from "lucide-react";
 import logo from "../../assets/clinikpe.svg";
 
 interface SidebarContentProps {
