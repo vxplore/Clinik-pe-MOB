@@ -2,7 +2,6 @@ import { Clock, FlaskConical } from "lucide-react";
 import clsx from "clsx";
 import Badge from "../../../shared/ui/Badge";
 
-export type AssignmentStatus = "pending" | "completed";
 
 interface AssignmentCardProps {
   name: string;
@@ -10,7 +9,7 @@ interface AssignmentCardProps {
   time: string; // e.g. "09:30 AM"
   completedSamples: number;
   totalSamples: number;
-  status: AssignmentStatus;
+  status: string;
 }
 
 export default function AssignmentCard({

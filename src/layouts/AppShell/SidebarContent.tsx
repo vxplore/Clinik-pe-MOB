@@ -23,6 +23,10 @@ const SidebarContent: React.FC<SidebarContentProps> = ({
     // --- additional realistic items ---
     { label: "Help / Support", path: "/help-support", icon: HandFist },
     // { label: "Settings", path: "/settings", icon: Settings },
+    { label: "Map View", path: "/map-view", icon: HandFist },
+    { label: "Empty State", path: "/empty-state", icon: FolderClock },
+    { label: "Not Found", path: "/not-found", icon: HandFist },
+
   ];
 
   return (

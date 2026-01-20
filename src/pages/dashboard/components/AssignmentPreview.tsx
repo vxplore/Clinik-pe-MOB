@@ -1,9 +1,31 @@
 import SectionHeader from "./SectionHeader";
 import AssignmentCard from "./AssignmentCard";
 import { useNavigate } from "react-router-dom";
+import type { AssignmentsResponse } from "../../../apis/modules/assignment/assignment.types";
+import type { ApiError } from "../../../apis/client/ApiError";
+import AssignmentCardSkeleton from "./AssignmentCardSkeleton";
+interface AssignmentPreviewProps {
+  assignments?: AssignmentsResponse["assignments"];
+  isLoading?: boolean;
+  error?: ApiError | null;
+}
 
-export default function AssignmentPreview() {
+export default function AssignmentPreview({
+  assignments,
+  isLoading,
+  error,
+}: AssignmentPreviewProps) {
   const navigate = useNavigate();
+
+  if (error) {
+    return (
+      <div className="bg-white rounded-lg p-4">
+        <p className="text-red-600">
+          Error loading assignments: {error.message}
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white rounded-lg p-0  space-y-3">
@@ -13,31 +35,27 @@ export default function AssignmentPreview() {
         onActionClick={() => navigate("/assignments")}
       />
 
-      <AssignmentCard
-        name="Ayan Paul"
-        id="BC-98521"
-        time="09:30 AM"
-        completedSamples={0}
-        totalSamples={3}
-        status="pending"
-      />
-
-      <AssignmentCard
-        name="Mohan Paul"
-        id="BC-98522"
-        time="10:30 AM"
-        completedSamples={3}
-        totalSamples={3}
-        status="completed"
-      />
-      <AssignmentCard
-        name="Mohan Paul"
-        id="BC-98522"
-        time="10:30 AM"
-        completedSamples={3}
-        totalSamples={3}
-        status="completed"
-      />
+      {isLoading ? (
+        <>
+          <AssignmentCardSkeleton />
+          <AssignmentCardSkeleton />
+          <AssignmentCardSkeleton />
+        </>
+      ) : assignments && assignments.length > 0 ? (
+        assignments.map((assignment) => (
+          <AssignmentCard
+            key={assignment.id}
+            name={assignment.for_patient.name}
+            id={assignment.id}
+            time={assignment.schedule.start_date}
+            completedSamples={assignment.sample_statistics.collected}
+            totalSamples={assignment.sample_statistics.total}
+            status={assignment.status}
+          />
+        ))
+      ) : (
+        <div className="p-4 text-gray-500">No assignments found</div>
+      )}
     </div>
   );
 }

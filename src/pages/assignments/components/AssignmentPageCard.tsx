@@ -1,28 +1,28 @@
 import { useNavigate } from "react-router-dom";
 import Badge from "../../../shared/ui/Badge";
 import map from "../../../assets/map.svg";
+import { AssignmentPageCardSkeleton } from "./AssignmentPageCardSkeleton";
+
 interface AssignmentPageCardProps {
+  loading?: boolean;
+  error?: Error | null;
   id: string;
   name: string;
-  age: number;
-  gender: string;
-
+  age: number | null;
   address: string;
-  latitude: string;
-  longitude: string;
-
+  latitude: number;
+  longitude: number;
   collectedCount: number;
   totalCount: number;
-
   testsCount: number;
   samples: string[];
 }
 
 export function AssignmentPageCard({
+  loading,
   id,
   name,
   age,
-  gender,
   address,
   latitude,
   longitude,
@@ -33,6 +33,10 @@ export function AssignmentPageCard({
 }: AssignmentPageCardProps) {
   const navigate = useNavigate();
   const handleClick = () => navigate(`/assignments/${id}`);
+
+  if (loading) {
+    return <AssignmentPageCardSkeleton />;
+  }
 
   return (
     <div
@@ -46,9 +50,7 @@ export function AssignmentPageCard({
       <div className="flex items-start justify-between">
         <div>
           <p className="text-base font-semibold text-gray-900">{name}</p>
-          <p className="text-sm text-gray-500">
-            {age} years • {gender}
-          </p>
+          <p className="text-sm text-gray-500">{age} years</p>
         </div>
 
         <Badge color="green" size="xs">

@@ -1,0 +1,13 @@
+
+export interface DuePayment {
+    amount: string;      // keep as string (money precision)
+    currency: string;    // e.g. "INR"
+}
+export interface StatisticsResponse {
+    statistics: {
+        today_task: number;
+        pending_sample: number;
+        due_payment: DuePayment;
+    }
+
+}

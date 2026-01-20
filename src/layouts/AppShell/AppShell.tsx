@@ -7,7 +7,9 @@ import Error from "../../components/Error";
 import Sidebar from "./Sidebar";
 import { useState } from "react";
 import LogoutConfirmModal from "./LogoutConfirmModal";
+import { useLogout } from "../../pages/auth/hooks/useLogout";
 export default function AppShell() {
+  const { logout, isLoading } = useLogout();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const meta = Object.entries(routeMeta).find(([path]) =>
@@ -23,6 +25,11 @@ export default function AppShell() {
     setSidebarOpen(false);
     setLogoutOpen(true);
   };
+
+  const handleConfirmLogout = () => {
+    logout();
+    setLogoutOpen(false);
+  }
   return (
     <div className="app-frame">
       <Loader />
@@ -38,9 +45,10 @@ export default function AppShell() {
         onLogoutClick={handleLogoutClick}
       />
       <LogoutConfirmModal
+        isLoading={isLoading}
         opened={logoutOpen}
         onClose={() => setLogoutOpen(false)}
-        onConfirm={() => setLogoutOpen(false)}
+        onConfirm={handleConfirmLogout}
       />
       <main
         className={`app-content bg-gray-50/50 px-4 py-3 transition-opacity ${

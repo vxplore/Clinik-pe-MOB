@@ -1,0 +1,27 @@
+import { useMutation } from "@tanstack/react-query";
+import { loginApi } from "../../../apis/modules/auth/auth.api";
+// import type { LoginPayload } from "../../../apis/modules/auth/auth.types";
+import type { ApiError } from "../../../apis/client/ApiError";
+import { notify } from "../../../app/notifications";
+import { useNavigate } from "react-router-dom";
+
+export function useLogin() {
+    const navigate = useNavigate();
+    const mutation = useMutation({
+        mutationFn: loginApi,
+        onSuccess: (data) => {
+            notify.success(data.message ?? "Login successful");
+            navigate("/dashboard", { replace: true });
+        },
+        onError: (error: ApiError) => {
+            notify.error(error.message);
+        },
+
+    });
+
+
+    return {
+        login: mutation.mutate,
+        isLoading: mutation.isPending,
+    };
+}

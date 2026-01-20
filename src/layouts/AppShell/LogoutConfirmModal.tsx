@@ -4,8 +4,10 @@ interface LogoutConfirmModalProps {
   opened: boolean;
   onClose: () => void;
   onConfirm: () => void;
+  isLoading: boolean;
 }
 function LogoutConfirmModal({
+  isLoading,
   opened,
   onClose,
   onConfirm,
@@ -43,7 +45,7 @@ function LogoutConfirmModal({
 
         {/* Actions */}
         <Stack gap={6} mt="sm">
-          <Button color="red" fullWidth radius="md" onClick={onConfirm}>
+          <Button color="red" fullWidth radius="md" onClick={onConfirm} loading={isLoading}>
             Log out
           </Button>
 

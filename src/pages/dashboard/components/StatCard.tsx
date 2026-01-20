@@ -3,11 +3,18 @@ import React from "react";
 interface StatCardProps {
   icon: React.ReactNode;
   label: string;
-  value: string | number;
+  value?: string;
   color?: string;
+  isLoading?: boolean;
 }
 
-const StatCard = ({ icon, label, value, color = "#0D52AF" }: StatCardProps) => {
+const StatCard = ({
+  icon,
+  label,
+  value,
+  color = "#0D52AF",
+  isLoading = false,
+}: StatCardProps) => {
   return (
     <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
       {/* Icon Container */}
@@ -22,9 +29,13 @@ const StatCard = ({ icon, label, value, color = "#0D52AF" }: StatCardProps) => {
       <p className="text-gray-500 text-sm font-medium mb-2">{label}</p>
 
       {/* Value */}
-      <p className="text-lg font-bold" style={{ color }}>
-        {value}
-      </p>
+      {isLoading || !value ? (
+        <div className="h-6 w-20 bg-gray-200 rounded animate-pulse" />
+      ) : (
+        <p className="text-lg font-bold" style={{ color }}>
+          {value}
+        </p>
+      )}
     </div>
   );
 };

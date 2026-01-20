@@ -1,9 +1,13 @@
 import { ProfileAvatar } from "./ProfileAvatar";
-
-export const ProfileHeader = () => {
+interface ProfileHeaderProps {
+  profile?: {
+    profile_image: string | null;
+  } | null;
+}
+export const ProfileHeader = ({ profile }: ProfileHeaderProps) => {
   return (
     <div className="relative  ">
-      <ProfileAvatar />
+      <ProfileAvatar profileImage={profile?.profile_image ?? null} />
       <div className="relative  rounded-2xl h-[100px] rounded-b-[48px] overflow-hidden bg-gray-100">
         <div className="absolute inset-0 overflow-hidden">
           {/* Animated gradient base */}

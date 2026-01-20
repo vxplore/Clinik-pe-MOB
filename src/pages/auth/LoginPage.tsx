@@ -3,14 +3,14 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import logo from "../../assets/clinikpe.svg";
 import { loginSchema, type LoginFormValues } from "./validation";
-import { notify } from "../../app/notifications";
-import { useNavigate } from "react-router-dom";
+import { useLogin } from "./hooks/useLogin";
 export default function LoginPage() {
-  const navigate = useNavigate();
+  const { login, isLoading } = useLogin();
+
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     mode: "onSubmit",
@@ -18,12 +18,7 @@ export default function LoginPage() {
 
   const onSubmit = async (data: LoginFormValues) => {
     console.log(data);
-    //api call will work here
-    const success = true;
-    if (success) {
-      notify.success("Login successful!");
-      navigate("/dashboard", { replace: true });
-    }
+    login(data);
   };
 
   return (
@@ -39,10 +34,10 @@ export default function LoginPage() {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <TextInput
-            label="ID"
-            placeholder="Enter your user ID"
-            error={errors.id?.message}
-            {...register("id")}
+            label="Email"
+            placeholder="Enter your email"
+            error={errors.identifier?.message}
+            {...register("identifier")}
           />
 
           <PasswordInput
@@ -56,9 +51,10 @@ export default function LoginPage() {
             className="bg-primary"
             type="submit"
             fullWidth
-            loading={isSubmitting}
+            loading={isLoading}
+            disabled={isLoading}
           >
-            Submit
+            {isLoading ? "Logging in…" : "Login"}
           </Button>
         </form>
       </div>
