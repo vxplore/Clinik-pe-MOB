@@ -8,6 +8,7 @@ import Sidebar from "./Sidebar";
 import { useState } from "react";
 import LogoutConfirmModal from "./LogoutConfirmModal";
 import { useLogout } from "../../pages/auth/hooks/useLogout";
+import FloatingCartOverlay from "../../pages/Test/components/FloatingCartOverlay";
 export default function AppShell() {
 
 
@@ -43,6 +44,7 @@ export default function AppShell() {
     <div className="app-frame">
       <Loader />
       <Error />
+      <FloatingCartOverlay itemCount={0} totalAmount={0} />
       <Header
         variant={meta.header}
         title={meta.title}

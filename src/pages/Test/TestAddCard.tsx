@@ -16,6 +16,7 @@ interface TestAddCardProps {
   home_collection_fee: string | null;
   is_exist_in_booking: boolean;
   description?: string;
+  isInCart?: boolean;
   onAdd: () => void;
 }
 
@@ -33,6 +34,7 @@ const TestAddCard: React.FC<TestAddCardProps> = ({
   home_collection_fee,
   is_exist_in_booking,
   description,
+  isInCart = false,
   onAdd,
 }) => {
   console.log(
@@ -74,8 +76,10 @@ const TestAddCard: React.FC<TestAddCardProps> = ({
           py={4}
           leftSection={<Plus size={20} />}
           disabled={is_exist_in_booking}
+          variant={isInCart ? "filled" : "filled"}
+          color={isInCart ? "#FF2E2E" : "#0D52AF"}
         >
-          {is_exist_in_booking ? "Added" : "Add"}
+          {isInCart ? "Remove" : "Add"}
         </Button>
       </div>
     </div>
