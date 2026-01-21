@@ -50,7 +50,7 @@ export interface AssignmentFilter {
 export interface AssignmentDetailData {
   assignment: {
     id: string;
-    status:string
+    status: string
     count_test: number;
     currency: string;
 
@@ -100,7 +100,7 @@ export interface AssignmentDetailData {
   };
 }
 
-  
+
 export interface AssignmentSamplesData {
   sample_statistics: {
     total: number;
@@ -110,7 +110,7 @@ export interface AssignmentSamplesData {
   samples: {
     id: string;
     name: string;
-    status: "pending" | "collected";
+    status: string
     description: string | null;
     notes: string | null;
     booking_item_ids: string[];
@@ -134,14 +134,14 @@ export interface AssignmentTest {
   display_name: string;
   mrp: number;
   price: string;
-  gender: "male" | "female";
+  gender: string
   home_collection_possible: "0" | "1";
   home_collection_fee: string;
   organization_id: string;
   center_id: string;
   test_count: string;
-  type: "panels" | "other-tests";
-  sub_type: "lab" | "other";
+  type:string
+  sub_type:string
   discount_available: boolean;
   discount_percentage: string;
   is_assigned: boolean;
@@ -150,7 +150,7 @@ export interface AssignmentTest {
 
 export interface AssignmentPaymentsData {
   currency: "INR";
-  statistics: { 
+  statistics: {
     total_amount: string;
     discount_amount: string;
     payable_amount: string;
@@ -159,9 +159,9 @@ export interface AssignmentPaymentsData {
   payments: {
     id: string;
     amount: string;
-    type: "full" | "partial";
-    method: "online" | "cash" | "upi";
-    status: "paid" | "pending" | "failed";
+    type: string
+    method: string
+    status: string
     note: string;
     paid_at: {
       timestamp: string;
@@ -169,4 +169,31 @@ export interface AssignmentPaymentsData {
       time: string;
     };
   }[];
+}
+
+
+
+export interface AssignmentActivitiesData {
+  activities: {
+    id: string;
+    type: string
+    description: string;
+    timestamp: string;
+    user: {
+      name: string;
+    };
+  }[];
+}
+
+export interface AssignmentPaymentTypesData {
+  payment_types: {
+    key: string;
+    value: string;
+  }[];
+}
+
+
+export interface AssignmentPaymentPayload {
+  amount: number
+  mode : string;
 }

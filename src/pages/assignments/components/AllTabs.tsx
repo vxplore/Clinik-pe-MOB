@@ -2,35 +2,53 @@ import { Tabs } from "@mantine/core";
 import SampleTab from "./SampleTab/SampleTab";
 import TestTab from "./TestTab/TestTab";
 import PaymentTab from "./PaymentTab/PaymentTab";
-import ActivitesTab, { type Activity } from "./ActivitiesTab/ActivitesTab";
-import { useAssignmentSample, useAssignmentTests } from "../hooks/useTabData";
+import ActivitesTab from "./ActivitiesTab/ActivitesTab";
+import {
+  useAssignmentActivities,
+  useAssignmentPayments,
+  useAssignmentSample,
+  useAssignmentTests,
+} from "../hooks/useTabData";
 import { useParams } from "react-router-dom";
 interface AllTabsProps {
   activeTab: string | null;
   setActiveTab: (tab: string | null) => void;
-  activities: Activity[];
   handleMarkCollected?: () => Promise<void>;
 }
 
 const AllTabs = ({
   activeTab,
   setActiveTab,
-  activities,
+
   handleMarkCollected,
 }: AllTabsProps) => {
   const { id } = useParams<{ id: string }>();
   console.log("Assignment ID in AllTabs:", id);
-
+  //sample tab data
   const { samples, isLoading, error } = useAssignmentSample(id!);
+  //tests tab data
   const {
     tests,
     pagination,
     isLoading: testsLoading,
     error: testsError,
   } = useAssignmentTests(id!, 1, 100, activeTab === "Tests");
+  //payments tab data
+  const {
+    payments,
+    isLoading: paymentsLoading,
+    error: paymentsError,
+  } = useAssignmentPayments(id!, activeTab === "Payments");
+  //activities tab data
+  const {
+    activities: activitiesData,
+    isLoading: activitiesLoading,
+    error: activitiesError,
+  } = useAssignmentActivities(id!, activeTab === "Activities");
 
   console.log("Samples data in AllTabs:", samples);
   console.log("Tests data in AllTabs:", tests);
+  console.log("Payments data in AllTabs:", payments);
 
   return (
     <Tabs
@@ -73,10 +91,18 @@ const AllTabs = ({
       </Tabs.Panel>
 
       <Tabs.Panel value="Payments" className="pt-2">
-        <PaymentTab />
+        <PaymentTab
+          payments={payments}
+          isLoading={paymentsLoading}
+          error={paymentsError}
+        />
       </Tabs.Panel>
       <Tabs.Panel value="Activities" className="pt-2">
-        <ActivitesTab activities={activities} />
+        <ActivitesTab
+          activities={activitiesData}
+          isLoading={activitiesLoading}
+          error={activitiesError}
+        />
       </Tabs.Panel>
     </Tabs>
   );

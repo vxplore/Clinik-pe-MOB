@@ -3,12 +3,22 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Select, TextInput } from "@mantine/core";
 import { paymentSchema, type PaymentFormData } from "./validation";
+import {
+  useAssignmentPaymentAddition,
+  useAssignmentPaymentTypes,
+} from "../hooks/usePayment";
+import { useQueryClient } from "@tanstack/react-query";
+import { notify } from "../../../app/notifications";
+import { useParams } from "react-router-dom";
 
 interface PaymentModalProps {
   onClose: () => void;
 }
 
 const PaymentModal: React.FC<PaymentModalProps> = ({ onClose }) => {
+  const { paymentTypes, isLoading } = useAssignmentPaymentTypes();
+  const { id } = useParams<{ id: string }>();
+  console.log("Assignment ID in PaymentModal:", id);
   const {
     control,
     handleSubmit,
@@ -17,13 +27,38 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ onClose }) => {
     resolver: zodResolver(paymentSchema),
     defaultValues: {
       amount: "",
-      method: "",
+      mode: "",
     },
   });
 
+  const paymentMethodOptions =
+    paymentTypes?.map((type) => ({
+      value: type.key,
+      label: type.value,
+    })) || [];
+
+  const queryClient = useQueryClient();
+  const paymentMutation = useAssignmentPaymentAddition(id!);
+
   const onSubmit = (data: PaymentFormData) => {
-    console.log("Payment added:", data);
-    onClose();
+    paymentMutation.mutate(
+      {
+        amount: Number(data.amount),
+        mode: data.mode,
+      },
+      {
+        onSuccess: (response) => {
+          queryClient.invalidateQueries({
+            queryKey: ["assignments-payments", id],
+          });
+          onClose();
+          notify.success(response.message || "Payment added successfully");
+        },
+        onError: (response) => {
+          notify.error(response?.message || "Failed to add payment");
+        },
+      },
+    );
   };
 
   return (
@@ -45,19 +80,17 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ onClose }) => {
       />
 
       <Controller
-        name="method"
+        name="mode"
         control={control}
         render={({ field }) => (
           <Select
             label="Payment Method"
             placeholder="Select payment method"
-            data={[
-              { value: "cash", label: "Cash" },
-              { value: "card", label: "Card" },
-            ]}
+            data={paymentMethodOptions}
             {...field}
             required
-            error={errors.method?.message}
+            disabled={isLoading}
+            error={errors.mode?.message}
           />
         )}
       />
@@ -66,7 +99,12 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ onClose }) => {
         <Button variant="outline" onClick={onClose} className="flex-1">
           Cancel
         </Button>
-        <Button type="submit" className="flex-1">
+        <Button
+          type="submit"
+          loading={paymentMutation.isPending}
+          className="flex-1"
+          disabled={isLoading}
+        >
           New Payment
         </Button>
       </div>

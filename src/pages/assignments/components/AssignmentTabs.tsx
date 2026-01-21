@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Plus } from "lucide-react";
 import { Modal } from "@mantine/core";
-import { type Activity } from "./ActivitiesTab/ActivitesTab";
 import PaymentModal from "./PaymentModal";
 import AllTabs from "./AllTabs";
 import { notify } from "../../../app/notifications";
@@ -29,44 +28,6 @@ const AssignmentTabs = () => {
     // 5 seconds
   };
 
-  const activities: Activity[] = [
-    {
-      id: "1",
-      name: "Balaram Das",
-      action: "collected Urine for Urine test today at 9 AM",
-      timestamp: "2 hours ago",
-      color: "#10b981",
-    },
-    {
-      id: "2",
-      name: "Rakesh Sharma",
-      action: "collected Blood for Sugar test yesterday at 10 AM",
-      timestamp: "1 day ago",
-      color: "#3b82f6",
-    },
-    {
-      id: "3",
-      name: "Sanjiv Verma",
-      action: "added a new test 'Blood Sugar Test' yesterday",
-      timestamp: "1 day ago",
-      color: "#f97316",
-    },
-    {
-      id: "4",
-      name: "Dr. Priya Singh",
-      action: "reviewed and approved the test requirements :",
-      timestamp: "2 days ago",
-      color: "#a855f7",
-    },
-    {
-      id: "4",
-      name: "Dr. Priya Singh",
-      action: "reviewed and approved the test requirements :",
-      timestamp: "2 days ago",
-      color: "#000000",
-    },
-  ];
-
   const handleAddClick = () => {
     if (activeTab === "Tests") {
       navigate("add-test");
@@ -81,7 +42,6 @@ const AssignmentTabs = () => {
         handleMarkCollected={handleMarkCollected}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
-        activities={activities}
       />
 
       {(activeTab === "Tests" || activeTab === "Payments") && (

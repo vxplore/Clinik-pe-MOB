@@ -1,46 +1,81 @@
 import React from "react";
 import { Plus } from "lucide-react";
 import { Button } from "@mantine/core";
+
 interface TestAddCardProps {
-  title: string;
-  description: string;
-  originalPrice?: string; // crossed price
-  discountedPrice: string;
+  uid: string;
+  display_name: string;
+  slug: string;
+  type: string;
+  sub_type: string;
+  mrp: number;
+  price: string;
+  discount_available: boolean;
+  discount_percentage: string;
+  home_collection_possible: "0" | "1";
+  home_collection_fee: string | null;
+  is_exist_in_booking: boolean;
+  description?: string;
   onAdd: () => void;
-  addLabel?: string; // default: "Add"
 }
 
 const TestAddCard: React.FC<TestAddCardProps> = ({
-  title,
+  uid,
+  display_name,
+  slug,
+  type,
+  sub_type,
+  mrp,
+  price,
+  discount_available,
+  discount_percentage,
+  home_collection_possible,
+  home_collection_fee,
+  is_exist_in_booking,
   description,
-  originalPrice,
-  discountedPrice,
   onAdd,
-  addLabel = "Add",
 }) => {
+  console.log(
+    "Rendering TestAddCard for:",
+    uid,
+    slug,
+    home_collection_possible,
+    home_collection_fee,
+  );
   return (
     <div className="w-full rounded-xl border border-[#F3F4F6] shadow-sm bg-white p-4">
       {/* Title & description */}
-      <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
-      <p className="mt-1 text-sm text-gray-600">{description}</p>
+      <h3 className="text-lg font-semibold text-gray-900">{display_name}</h3>
+      <p className="mt-1 text-sm text-gray-600">
+        {description || `${sub_type} • ${type}`}
+      </p>
 
       {/* Bottom row */}
       <div className="mt-4 flex items-center justify-between">
         {/* Prices */}
         <div className="flex items-center gap-2">
-          {originalPrice && (
-            <span className="text-sm text-gray-400 line-through">
-              {originalPrice}
-            </span>
+          {mrp > 0 && (
+            <span className="text-sm text-gray-400 line-through">₹{mrp}</span>
           )}
           <span className="text-lg font-semibold text-green-600">
-            {discountedPrice}
+            {price || "₹0"}
           </span>
+          {discount_available && discount_percentage !== "0.0" && (
+            <span className="text-xs text-green-600 font-medium">
+              -{discount_percentage}%
+            </span>
+          )}
         </div>
 
         {/* Add button */}
-        <Button onClick={onAdd} px={16} py={4} leftSection={<Plus size={20} />}>
-          {addLabel}
+        <Button
+          onClick={onAdd}
+          px={16}
+          py={4}
+          leftSection={<Plus size={20} />}
+          disabled={is_exist_in_booking}
+        >
+          {is_exist_in_booking ? "Added" : "Add"}
         </Button>
       </div>
     </div>

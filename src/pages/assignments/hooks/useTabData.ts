@@ -1,7 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import type { ApiError } from "../../../apis/client/ApiError";
 import { getAssignmentSample } from "../../../apis/modules/assignment/tabs/assignmentsample.api";
-import { getAssignmentTest } from "../../../apis/modules/assignment/tabs/assignmenttests.api";
+import { getAssignmentTest } from "../../../apis/modules/assignment/tabs/assignmentTests.api";
+import { getAssignmentPayment } from "../../../apis/modules/assignment/tabs/assignmentpayment.api";
+import { getAssignmentActivities } from "../../../apis/modules/assignment/tabs/assignmentactivity.api";
 
 export function useAssignmentSample(id: string) {
     const query = useQuery({
@@ -34,6 +36,41 @@ export function useAssignmentTests(id: string, pageNumber: number, pageSize: num
     return {
         tests: query.data?.data.tests,
         pagination: query.data?.data.pagination,
+        isLoading: query.isLoading,
+        error: query.error as ApiError | null,
+    };
+}
+
+
+
+export function useAssignmentPayments(id: string , enabled: boolean = true) {
+    const query = useQuery({
+        queryKey: ["assignments-payments", id],
+        queryFn: () => getAssignmentPayment(id),
+        retry: false,
+        staleTime: 5 * 60 * 1000,
+        enabled: !!id && enabled,
+    });
+    console.log("Assignments Payments query data:", query.data);
+    return {
+        payments: query.data?.data,
+        isLoading: query.isLoading,
+        error: query.error as ApiError | null,
+    };
+}
+
+
+export function useAssignmentActivities(id: string , enabled: boolean = true) {
+    const query = useQuery({
+        queryKey: ["assignments-activities", id],
+        queryFn: () => getAssignmentActivities(id),
+        retry: false,
+        staleTime: 5 * 60 * 1000,
+        enabled: !!id && enabled,
+    });
+    console.log("Assignments Activities query data:", query.data);
+    return {
+        activities: query.data?.data.activities,
         isLoading: query.isLoading,
         error: query.error as ApiError | null,
     };
