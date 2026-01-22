@@ -9,6 +9,7 @@ interface AuthMeResponse {
 export function useAuthBootstrap() {
     const setAuth = useAuthStore((s) => s.setAuth);
     const setUnauth = useAuthStore((s) => s.setUnauth);
+    const currentUser = useAuthStore((s) => s.user);
 
     useEffect(() => {
         let mounted = true;
@@ -21,12 +22,17 @@ export function useAuthBootstrap() {
                 });
                 console.log("Auth bootstrap response:", response.httpStatus);
                 if (mounted && response.httpStatus === 200 && response.data?.status === "authenticated") {
-                    // User data will be fetched/loaded separately from another endpoint
-                    setAuth({
-                        id: "",
-                        name: "",
-                        profile_image: null,
-                    });
+                    // Preserve existing user data from localStorage, just update status
+                    if (currentUser) {
+                        setAuth(currentUser);
+                    } else {
+                        // Fallback if no persisted data (shouldn't happen in normal flow)
+                        setAuth({
+                            id: "",
+                            name: "",
+                            profile_image: null,
+                        });
+                    }
                 } else if (mounted) {
                     setUnauth();
                 }

@@ -57,10 +57,13 @@ const TestAddCard: React.FC<TestAddCardProps> = ({
         {/* Prices */}
         <div className="flex items-center gap-2">
           {mrp > 0 && (
-            <span className="text-sm text-gray-400 line-through">₹{mrp}</span>
+            <span className="text-sm text-gray-400 line-through font-sans">
+              ₹{mrp}
+            </span>
           )}
           <span className="text-lg font-semibold text-green-600">
-            {price || "₹0"}
+            <span className="font-sans">₹</span>
+            {price || "0"}
           </span>
           {discount_available && discount_percentage !== "0.0" && (
             <span className="text-xs text-green-600 font-medium">

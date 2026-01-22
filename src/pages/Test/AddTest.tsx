@@ -8,9 +8,8 @@ import SecondaryHeader from "../../layouts/AppShell/SecondaryHeader";
 import { TextInput } from "@mantine/core";
 import { Search } from "lucide-react";
 import { useOtherTests } from "./hooks/useOtherTests";
-import { useParams, useNavigate } from "react-router-dom";
-import { useAssignmentPaymentAddition } from "./hooks/useAddOtherTest";
-import { buildAddTestPayload } from "./utils/payloadbuilder";
+import { useParams } from "react-router-dom";
+import { useTestCheckout } from "./hooks/useTestCheckout";
 interface CartItem {
   uid: string;
   display_name: string;
@@ -29,14 +28,17 @@ interface CartItem {
 
 const AddTest = () => {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartModalOpen, setIsCartModalOpen] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
 
-  const { mutate: addTests, isPending } = useAssignmentPaymentAddition(id!);
+  const { handleCheckout, isCheckoutPending } = useTestCheckout({
+    id: id!,
+    cart,
+    onShowSuccess: setShowSuccess,
+  });
   // Debounce search value
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -155,7 +157,7 @@ const AddTest = () => {
       )}
 
       <TestCartModal
-        isPending={isPending}
+        isPending={isCheckoutPending}
         isOpen={isCartModalOpen}
         items={cart}
         totalAmount={cartTotal}
@@ -167,30 +169,7 @@ const AddTest = () => {
           setIsCartModalOpen(false);
           setShowSuccess(false);
         }}
-        onCheckout={() => {
-          if (cart.length === 0) {
-            console.log("Cart is empty");
-            return;
-          }
-
-          const payload = buildAddTestPayload(cart);
-          console.log("Proceeding to checkout with payload:", payload);
-
-          addTests(payload, {
-            onSuccess: (response) => {
-              console.log("Tests added successfully:", response);
-              setShowSuccess(true);
-
-              // Navigate after 3 seconds to allow success animation to complete
-              setTimeout(() => {
-                navigate(`/assignments/${id}?tab=tests`);
-              }, 3000);
-            },
-            onError: (error) => {
-              console.error("Error adding tests:", error);
-            },
-          });
-        }}
+        onCheckout={handleCheckout}
       />
     </div>
   );
