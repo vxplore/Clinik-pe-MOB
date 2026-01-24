@@ -107,6 +107,7 @@ export interface AssignmentSamplesData {
     collected: number;
     pending: number;
   };
+   booking_id: string;
   samples: {
     id: string;
     name: string;

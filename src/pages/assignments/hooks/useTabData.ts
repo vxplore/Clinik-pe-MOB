@@ -1,6 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { ApiError } from "../../../apis/client/ApiError";
-import { getAssignmentSample } from "../../../apis/modules/assignment/tabs/assignmentsample.api";
+import { getAssignmentSample, markSampleAsCollected } from "../../../apis/modules/assignment/tabs/assignmentsample.api";
 import { getAssignmentTest } from "../../../apis/modules/assignment/tabs/assignmentTests.api";
 import { getAssignmentPayment } from "../../../apis/modules/assignment/tabs/assignmentpayment.api";
 import { getAssignmentActivities } from "../../../apis/modules/assignment/tabs/assignmentactivity.api";
@@ -43,7 +43,7 @@ export function useAssignmentTests(id: string, pageNumber: number, pageSize: num
 
 
 
-export function useAssignmentPayments(id: string , enabled: boolean = true) {
+export function useAssignmentPayments(id: string, enabled: boolean = true) {
     const query = useQuery({
         queryKey: ["assignments-payments", id],
         queryFn: () => getAssignmentPayment(id),
@@ -60,7 +60,7 @@ export function useAssignmentPayments(id: string , enabled: boolean = true) {
 }
 
 
-export function useAssignmentActivities(id: string , enabled: boolean = true) {
+export function useAssignmentActivities(id: string, enabled: boolean = true) {
     const query = useQuery({
         queryKey: ["assignments-activities", id],
         queryFn: () => getAssignmentActivities(id),
@@ -74,4 +74,26 @@ export function useAssignmentActivities(id: string , enabled: boolean = true) {
         isLoading: query.isLoading,
         error: query.error as ApiError | null,
     };
+}
+
+
+export function useMarkSampleCollected(
+    booking_id: string,
+    sample: string,
+    assignment_id: string,
+    id: string
+) {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationKey: ["mark-sample-collected", booking_id, sample, assignment_id],
+        mutationFn: () =>
+            markSampleAsCollected(booking_id, sample, assignment_id),
+
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ["assignments-sample", id],
+            });
+        },
+    });
 }

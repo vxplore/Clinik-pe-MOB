@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useCallback } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useAssignmentPaymentAddition } from "./useAddOtherTest";
 import { buildAddTestPayload } from "../utils/payloadbuilder";
 import { notify } from "../../../app/notifications";
@@ -32,6 +33,7 @@ export function useTestCheckout({
     onShowSuccess,
 }: UseTestCheckoutProps) {
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
     const { mutate: addTests, isPending } = useAssignmentPaymentAddition(id);
 
     const handleCheckout = useCallback(() => {
@@ -46,6 +48,12 @@ export function useTestCheckout({
         addTests(payload, {
             onSuccess: (response) => {
                 console.log("Tests added successfully:", response);
+
+                // Invalidate the assignments-tests query to refresh the list
+                queryClient.invalidateQueries({
+                    queryKey: ["assignments-tests", id],
+                });
+
                 onShowSuccess(true);
 
                 // Navigate after 3 seconds to allow success animation to complete
@@ -60,7 +68,7 @@ export function useTestCheckout({
                 console.error("Error adding tests:", error);
             },
         });
-    }, [cart, id, addTests, navigate, onShowSuccess]);
+    }, [cart, id, addTests, navigate, onShowSuccess, queryClient]);
 
     return {
         handleCheckout,

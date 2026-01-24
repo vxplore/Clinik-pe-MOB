@@ -1,25 +1,62 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { Plus } from "lucide-react";
 import PaymentModal from "./PaymentModal";
 import AllTabs from "./AllTabs";
 import { notify } from "../../../app/notifications";
-import { useUIStore } from "../../../stores/ui.store";
+import { useMarkSampleCollected } from "../hooks/useTabData";
 
 const AssignmentTabs = () => {
   const [activeTab, setActiveTab] = useState<string | null>("Sample");
   const [paymentModalOpen, setPaymentModalOpen] = useState(false);
-  const navigate = useNavigate();
-  // UI Store
-  const showLoader = useUIStore((s) => s.showLoader);
-  const hideLoader = useUIStore((s) => s.hideLoader);
+  const [markParams, setMarkParams] = useState<{
+    bookingId: string;
+    sampleId: string;
+  } | null>(null);
 
-  const handleMarkCollected = async () => {
-    showLoader();
-    setTimeout(() => {
-      hideLoader();
-      notify.success("Samples marked as collected successfully!");
-    }, 1000);
+  const navigate = useNavigate();
+  const { id: assignmentId } = useParams<{ id: string }>();
+  // UI Store
+  // const showLoader = useUIStore((s) => s.showLoader);
+  // const hideLoader = useUIStore((s) => s.hideLoader);
+
+  // Call hook at component level (only when params are set)
+  const { mutate: markCollected, isPending } = useMarkSampleCollected(
+    markParams?.bookingId || "",
+    markParams?.sampleId || "",
+    assignmentId!,
+    assignmentId!,
+  );
+
+  // Trigger mutation when params change
+  useEffect(() => {
+    if (!markParams) return;
+
+    markCollected(undefined, {
+      onSuccess: () => {
+        notify.success("Sample marked as collected successfully!");
+        setMarkParams(null);
+      },
+      onError: (error) => {
+        notify.error(error?.message || "Failed to mark sample as collected");
+        console.error("Error marking sample:", error);
+        setMarkParams(null);
+      },
+    });
+  }, [markParams, markCollected]);
+
+  const handleMarkCollected = async (sampleId: string, bookingId: string) => {
+    console.log(
+      "Mark Collected - Sample ID:",
+      sampleId,
+      "Booking ID:",
+      bookingId,
+      "Assignment ID:",
+      assignmentId,
+    );
+
+    // Just set the params - the hook will be triggered via useEffect
+    setMarkParams({ bookingId, sampleId });
   };
 
   const handleAddClick = () => {
@@ -36,6 +73,7 @@ const AssignmentTabs = () => {
         handleMarkCollected={handleMarkCollected}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
+        isMarkingCollected={isPending}
       />
 
       {(activeTab === "Tests" || activeTab === "Payments") && (

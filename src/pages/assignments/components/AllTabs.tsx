@@ -13,13 +13,14 @@ import { useParams } from "react-router-dom";
 interface AllTabsProps {
   activeTab: string | null;
   setActiveTab: (tab: string | null) => void;
-  handleMarkCollected?: () => Promise<void>;
+  handleMarkCollected?: (id: string, booking_id: string) => Promise<void>;
+  isMarkingCollected?: boolean;
 }
 
 const AllTabs = ({
   activeTab,
   setActiveTab,
-
+  isMarkingCollected,
   handleMarkCollected,
 }: AllTabsProps) => {
   const { id } = useParams<{ id: string }>();
@@ -78,6 +79,7 @@ const AllTabs = ({
           isLoading={isLoading}
           error={error}
           handleMarkCollected={handleMarkCollected}
+          isMarkingCollected={isMarkingCollected}
         />
       </Tabs.Panel>
 

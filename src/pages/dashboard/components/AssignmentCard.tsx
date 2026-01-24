@@ -2,7 +2,6 @@ import { Clock, FlaskConical } from "lucide-react";
 import clsx from "clsx";
 import Badge from "../../../shared/ui/Badge";
 
-
 interface AssignmentCardProps {
   name: string;
   id: string;
@@ -60,8 +59,8 @@ export default function AssignmentCard({
       <div className="h-1.5 w-full bg-gray-200 rounded-full overflow-hidden">
         <div
           className={clsx(
-            "h-full rounded-full",
-            status === "completed" ? "bg-primary" : "bg-muted"
+            "h-full rounded-full transition-all duration-500",
+            progress === 100 ? "bg-primary" : "bg-muted",
           )}
           style={{ width: `${progress}%` }}
         />
