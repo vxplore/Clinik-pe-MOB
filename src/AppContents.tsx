@@ -19,32 +19,42 @@ import { PrivateRoute, PublicRoute } from "./app/guards";
 import Notifications from "./pages/Notifications/Notifications";
 
 function AppContents() {
+  const isprod = "production";
+  const baseUrl = isprod === "production" ? "collectionagent.clinikpe.com" : "";
   useAuthBootstrap();
   return (
     <Routes>
       <Route path="/" element={<SplashPage />} />
       {/* Public Routes */}
       <Route element={<PublicRoute />}>
-        <Route path="/login" element={<LoginPage />} />
+        <Route path={`${baseUrl}/login`} element={<LoginPage />} />
       </Route>
 
       {/* Private/Protected Routes */}
       <Route element={<PrivateRoute />}>
         <Route element={<AppShell />}>
-          <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/assignments" element={<AssignmentPage />} />
-          <Route path="/assignments/:id" element={<AssignmentPageDetails />} />
-          <Route path="/assignments/:id/add-test" element={<AddTest />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/help-support" element={<HelpSupport />} />
-          <Route path="/payments" element={<Payments />} />
-          <Route path="/history" element={<History />} />
-          <Route path="/map-view" element={<MapView />} />
-          <Route path="/empty-state" element={<EmptyState />} />
-           
+          <Route path={`${baseUrl}/dashboard`} element={<DashboardPage />} />
+          <Route path={`${baseUrl}/assignments`} element={<AssignmentPage />} />
+          <Route
+            path={`${baseUrl}/assignments/:id`}
+            element={<AssignmentPageDetails />}
+          />
+          <Route
+            path={`${baseUrl}/assignments/:id/add-test`}
+            element={<AddTest />}
+          />
+          <Route path={`${baseUrl}/profile`} element={<Profile />} />
+          <Route path={`${baseUrl}/settings`} element={<Settings />} />
+          <Route path={`${baseUrl}/help-support`} element={<HelpSupport />} />
+          <Route path={`${baseUrl}/payments`} element={<Payments />} />
+          <Route path={`${baseUrl}/history`} element={<History />} />
+          <Route path={`${baseUrl}/map-view`} element={<MapView />} />
+          <Route path={`${baseUrl}/empty-state`} element={<EmptyState />} />
 
-          <Route path="/notifications" element={<Notifications />} />
+          <Route
+            path={`${baseUrl}/notifications`}
+            element={<Notifications />}
+          />
         </Route>
       </Route>
 
