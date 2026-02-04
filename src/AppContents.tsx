@@ -20,7 +20,7 @@ import Notifications from "./pages/Notifications/Notifications";
 
 function AppContents() {
   const isprod = "production";
-  const baseUrl = isprod === "production" ? "collectionagent.clinikpe.com" : "";
+  const baseUrl = ""
   useAuthBootstrap();
   return (
     <Routes>
